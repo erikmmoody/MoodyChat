@@ -1,7 +1,9 @@
 package com.moody.chat;
 
 import com.moody.chat.health.TemplateHealthCheck;
+import com.moody.chat.resources.ConnectionResource;
 import com.moody.chat.resources.HelloWorldResource;
+import com.moody.chat.resources.MessageResource;
 
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
@@ -30,6 +32,10 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
         );
         final TemplateHealthCheck healthCheck = 
             new TemplateHealthCheck(configuration.getTemplate());
+        final MessageResource messageResource = new MessageResource();
+        final ConnectionResource connectionResource = new ConnectionResource();
+        environment.jersey().register(connectionResource);
+        environment.jersey().register(messageResource);
         environment.jersey().register(resource); 
         environment.healthChecks().register("template", healthCheck);
 
